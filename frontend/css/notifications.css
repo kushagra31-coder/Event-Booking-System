@@ -1,0 +1,225 @@
+/* Notification bell + dropdown, report page */
+
+/* ── Notification bell ── */
+.notif-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: #9e9890;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.notif-btn:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.07);
+}
+
+.notif-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--red);
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+}
+
+/* ── Notification dropdown ── */
+.notif-dropdown {
+  position: absolute;
+  top: 52px;
+  right: 16px;
+  width: 340px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 300;
+  overflow: hidden;
+}
+
+.notif-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.notif-dropdown-header h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.notif-mark-read {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--red);
+  cursor: pointer;
+  font-family: var(--font-body);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.notif-mark-read:hover {
+  background: #fdecea;
+}
+
+.notif-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.notif-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f5f2ee;
+  font-size: 13px;
+  line-height: 1.4;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.notif-item:last-child { border-bottom: none; }
+
+.notif-item.unread {
+  background: #fdf9f7;
+}
+
+.notif-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.notif-dot.read { background: transparent; }
+
+.notif-item .notif-text { color: var(--text); }
+
+.notif-item .notif-time {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.notif-empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ── Event Report page ── */
+.report-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+.report-header-card {
+  background: var(--dark-2);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.report-header-card h2 {
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.report-header-card .r-meta {
+  font-size: 13px;
+  color: #7a7570;
+}
+
+.report-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.report-stat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.report-stat .rs-label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.report-stat .rs-val {
+  font-family: var(--font-head);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Attendee table */
+.attendee-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.attendee-table thead th {
+  background: #f2efe9;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.attendee-table tbody td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #f0ece6;
+  vertical-align: middle;
+}
+
+.attendee-table tbody tr:last-child td { border-bottom: none; }
+.attendee-table tbody tr:hover td { background: #faf8f5; }
+
+@media (max-width: 700px) {
+  .report-stats { grid-template-columns: repeat(2, 1fr); }
+  .report-header-card { grid-template-columns: 1fr; }
+}

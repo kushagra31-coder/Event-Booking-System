@@ -126,6 +126,7 @@ function renderTable(events) {
         <td>
           <button class="btn-edit" onclick="openEditModal(${ev.id})">Edit</button>
           <button class="btn-del"  onclick="confirmDelete(${ev.id}, '${ev.title.replace(/'/g, "\\'")}')">Delete</button>
+          <a href="/report.html?event=${ev.id}" style="font-size:12px; color:var(--muted); margin-left:6px;">Report</a>
         </td>
       </tr>
     `;

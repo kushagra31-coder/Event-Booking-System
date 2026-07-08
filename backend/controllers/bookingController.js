@@ -1,4 +1,5 @@
 const db = require('../db');
+const { createNotification } = require('./notificationController');
 
 async function createBooking(req, res) {
   const userId  = req.user.id;
@@ -58,7 +59,11 @@ async function createBooking(req, res) {
 
     await conn.commit();
 
-    // TODO: create in-app notification (Module 5)
+    // fire-and-forget: if this fails, the booking still succeeded
+    createNotification(
+      userId,
+      `Your booking for "${ev.title}" is confirmed! ${seats} seat${seats > 1 ? 's' : ''} reserved.`
+    ).catch(() => {});
 
     res.status(201).json({
       bookingId: result.insertId,
@@ -137,6 +142,12 @@ async function cancelBooking(req, res) {
     );
 
     await conn.commit();
+
+    createNotification(
+      req.user.id,
+      `Your booking for the event has been cancelled.`
+    ).catch(() => {});
+
     res.json({ message: 'Booking cancelled' });
   } catch (err) {
     await conn.rollback();

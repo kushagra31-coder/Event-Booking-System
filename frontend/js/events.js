@@ -293,6 +293,60 @@ async function confirmDelete(eventId, title) {
   }
 }
 
+// ── Analytics ──
+
+async function loadAnalytics() {
+  try {
+    const res  = await fetch(`${API}/dashboard/admin`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    const data = await res.json();
+    if (!res.ok) return;
+
+    const section = document.getElementById('analytics-section');
+    section.style.display = 'block';
+
+    // CSS bar chart — max bar is always 100%, others are proportional
+    const maxBooked = Math.max(...data.topEvents.map(e => e.tickets_booked), 1);
+    document.getElementById('bar-chart').innerHTML = data.topEvents.length === 0
+      ? '<p style="color:var(--muted);font-size:13px;">No bookings yet.</p>'
+      : data.topEvents.map(ev => {
+          const pct = Math.round((ev.tickets_booked / maxBooked) * 100);
+          const label = ev.title.length > 20 ? ev.title.substring(0, 19) + '\u2026' : ev.title;
+          return `
+            <div class="bar-row">
+              <span class="bar-label" title="${ev.title}">${label}</span>
+              <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+              <span class="bar-val">${ev.tickets_booked}</span>
+            </div>
+          `;
+        }).join('');
+
+    // recent bookings list
+    document.getElementById('recent-bookings').innerHTML = data.recentBookings.length === 0
+      ? '<p style="color:var(--muted);font-size:13px;">No bookings yet.</p>'
+      : data.recentBookings.map(b => {
+          const ago = new Date(b.booked_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short' });
+          const amt = parseFloat(b.total_amount) > 0 ? `\u20b9${parseFloat(b.total_amount).toFixed(0)}` : 'Free';
+          return `
+            <div class="recent-item">
+              <div>
+                <div class="r-name">${b.user_name}</div>
+                <div class="r-event">${b.event_title}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:600; font-size:13px;">${amt}</div>
+                <div class="r-seats">${b.seats} seat${b.seats > 1 ? 's' : ''} &middot; ${ago}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+  } catch (err) {
+    // analytics failing shouldn't block the rest of the page
+    console.error('Analytics load error:', err);
+  }
+}
+
 // ── Init ──
 
 if (!guardOrganizer()) {
@@ -314,4 +368,5 @@ if (!guardOrganizer()) {
   document.getElementById('event-form').addEventListener('submit', submitEventForm);
 
   loadMyEvents();
+  loadAnalytics();
 }

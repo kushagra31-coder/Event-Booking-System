@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard — EventHub</title>
+  <meta name="description" content="Your upcoming events, booking history, and account summary." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">Event<span>Hub</span></a>
+  <div class="navbar-user">
+    <span id="nav-username"></span>
+    <button class="btn btn-ghost" id="btn-logout" style="font-size:13px; padding:6px 14px;">Log out</button>
+  </div>
+</nav>
+
+<!-- Header band with stats -->
+<div class="dash-header">
+  <div class="dash-header-inner">
+    <h1>Welcome, <span id="user-name-display">—</span></h1>
+    <p class="sub">Here's a summary of your event activity</p>
+
+    <div class="dash-stats">
+      <div class="dash-stat">
+        <div class="s-label">Total Bookings</div>
+        <div class="s-value" id="s-total">—</div>
+      </div>
+      <div class="dash-stat">
+        <div class="s-label">Upcoming Events</div>
+        <div class="s-value accent" id="s-upcoming">—</div>
+      </div>
+      <div class="dash-stat">
+        <div class="s-label">Total Seats</div>
+        <div class="s-value" id="s-seats">—</div>
+      </div>
+      <div class="dash-stat">
+        <div class="s-label">Total Spent</div>
+        <div class="s-value" id="s-spent">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Booking list -->
+<main class="dash-main">
+  <div id="dash-alert" class="alert" style="display:none;"></div>
+
+  <div class="tab-row">
+    <button class="tab-btn active" data-filter="upcoming" id="tab-upcoming">Upcoming</button>
+    <button class="tab-btn" data-filter="all"      id="tab-all">All Bookings</button>
+    <button class="tab-btn" data-filter="past"     id="tab-past">Past</button>
+    <button class="tab-btn" data-filter="cancelled" id="tab-cancelled">Cancelled</button>
+  </div>
+
+  <div class="booking-list" id="booking-list">
+    <p style="color:var(--muted); font-size:14px;">Loading your bookings…</p>
+  </div>
+</main>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>

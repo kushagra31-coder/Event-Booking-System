@@ -7,6 +7,7 @@
   <meta name="description" content="Manage your events — create, edit, track bookings." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body class="admin-body">
 
@@ -78,6 +79,21 @@
     </table>
   </div>
 </main>
+
+<!-- Analytics section — loaded by events.js after events are fetched -->
+<div class="analytics-band" id="analytics-section" style="display:none;">
+  <h2>Analytics</h2>
+  <div class="analytics-grid">
+    <div class="card" style="padding:20px;">
+      <h3 style="font-size:15px; font-weight:600; margin-bottom:16px;">Top Events by Bookings</h3>
+      <div id="bar-chart" class="bar-chart"></div>
+    </div>
+    <div class="card" style="padding:20px;">
+      <h3 style="font-size:15px; font-weight:600; margin-bottom:16px;">Recent Bookings</h3>
+      <div id="recent-bookings" class="recent-list"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Create / Edit Modal -->
 <div id="event-modal" class="modal-overlay" style="display:none;">

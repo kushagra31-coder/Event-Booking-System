@@ -16,9 +16,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // api routes — more will be mounted here as modules are added
-app.use('/api/auth',     require('./routes/auth'));
-app.use('/api/events',   require('./routes/events'));
-app.use('/api/bookings', require('./routes/bookings'));
+app.use('/api/auth',      require('./routes/auth'));
+app.use('/api/events',    require('./routes/events'));
+app.use('/api/bookings',  require('./routes/bookings'));
+app.use('/api/dashboard', require('./routes/dashboard'));
 
 // multer validation errors come through here; generic fallback below
 app.use((err, req, res, next) => {

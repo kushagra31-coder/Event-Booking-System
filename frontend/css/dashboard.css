@@ -1,0 +1,300 @@
+/* User dashboard styles */
+
+/* ── Dashboard header band ── */
+.dash-header {
+  background: var(--dark-2);
+  padding: 28px 32px 0;
+}
+
+.dash-header-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.dash-header h1 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.dash-header h1 span {
+  color: var(--red);
+}
+
+.dash-header .sub {
+  color: #7a7570;
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+/* stat cards — frosted glass, same treatment as admin band */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding-bottom: 28px;
+}
+
+.dash-stat {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.dash-stat .s-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6a6560;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.dash-stat .s-value {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dash-stat .s-value.accent { color: var(--red); }
+
+/* ── Main content ── */
+.dash-main {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* ── Tab filter ── */
+.tab-row {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 9px 20px;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab-btn:hover { color: var(--text); }
+
+.tab-btn.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+  font-weight: 500;
+}
+
+/* ── Bookings list — cards, not a table (different from admin table intentionally) ── */
+.booking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.booking-row {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.booking-row.cancelled {
+  opacity: 0.65;
+}
+
+.booking-event-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+.booking-meta {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.booking-meta span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.booking-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.booking-amount {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.booking-amount.free {
+  font-size: 14px;
+  color: var(--success);
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #e8b4b0;
+  color: var(--red);
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.15s;
+}
+
+.btn-cancel:hover {
+  background: #fdecea;
+}
+
+/* ── Empty / no bookings ── */
+.empty-bookings {
+  text-align: center;
+  padding: 56px 24px;
+  color: var(--muted);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.empty-bookings a {
+  color: var(--red);
+}
+
+/* ── Admin analytics section ── */
+.analytics-band {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.analytics-band h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* CSS bar chart */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.bar-label {
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-track {
+  height: 8px;
+  background: #f0ede9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--red);
+  border-radius: 4px;
+  min-width: 4px;
+}
+
+.bar-val {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* Recent bookings list (admin) */
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0ece6;
+  font-size: 13px;
+}
+
+.recent-item:last-child { border-bottom: none; }
+
+.recent-item .r-name { font-weight: 500; color: var(--text); }
+.recent-item .r-event { color: var(--muted); font-size: 12px; }
+.recent-item .r-seats { color: var(--muted); font-size: 12px; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .dash-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 540px) {
+  .dash-header { padding: 20px 16px 0; }
+  .dash-main   { padding: 20px 16px 40px; }
+  .booking-row {
+    grid-template-columns: 1fr;
+  }
+  .booking-actions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

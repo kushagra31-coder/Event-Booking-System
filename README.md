@@ -1,8 +1,8 @@
 # EventHub — Event Booking System
 
-A full-stack web application for discovering, booking, and managing campus events. Built as an internship capstone project for SkillOrbit.
+A full-stack web application for discovering, booking, and managing campus events. Built as an internship capstone project for Skill Orbit.
 
-**Live demo:** _link after deployment_
+**Live Demo:** [https://event-booking-system-3h1n.onrender.com](https://event-booking-system-3h1n.onrender.com)
 
 ---
 
@@ -10,11 +10,11 @@ A full-stack web application for discovering, booking, and managing campus event
 
 | Layer    | Technology |
 |----------|-----------|
-| Backend  | Node.js + Express |
+| Backend  | Node.js + Express.js |
 | Database | MySQL |
-| Frontend | HTML + CSS + Vanilla JS |
-| Auth     | JWT (stored in localStorage) |
-| Deploy   | Railway (app + DB) |
+| Frontend | HTML5, CSS3, Vanilla JavaScript |
+| Auth     | JWT (JSON Web Tokens) stored in localStorage |
+| Deploy   | Render (Backend/Frontend) + FreeSQLDatabase (MySQL) |
 
 ---
 
@@ -24,32 +24,31 @@ A full-stack web application for discovering, booking, and managing campus event
 event-booking/
 ├── backend/
 │   ├── controllers/       # Business logic per module
-│   ├── middleware/         # JWT auth + Multer upload
+│   ├── middleware/        # JWT auth + Multer upload
 │   ├── routes/            # Express route definitions
 │   ├── db.js              # MySQL connection pool
-│   ├── server.js          # Entry point
+│   ├── server.js          # Entry point (serves frontend & API)
 │   └── .env.example
 ├── database/
-│   ├── schema.sql         # Table definitions (run first)
-│   └── seed.js            # Sample data script
+│   ├── schema.sql         # Table definitions
+│   ├── seed.js            # Local sample data script
+│   └── setup-remote.js    # Remote DB initialization script
 ├── frontend/
 │   ├── css/               # Stylesheets per module
 │   ├── js/                # Vanilla JS per page
-│   └── *.html             # Pages
+│   └── *.html             # Client-side Pages
 └── README.md
 ```
 
 ---
 
-## Modules Built
+## Key Features
 
-| # | Module | Pages |
-|---|--------|-------|
-| 1 | **Auth** | login.html, register.html |
-| 2 | **Event Management** | admin.html (organizer CRUD + analytics) |
-| 3 | **Ticket Booking** | index.html, event-detail.html, booking-confirm.html |
-| 4 | **Dashboard** | dashboard.html (user), analytics section on admin |
-| 5 | **Notifications & Reports** | Bell widget (all pages), report.html |
+- **Role-Based Access Control:** Separate dashboards and permissions for Students (booking) and Organizers (creation).
+- **Concurrency Control:** Utilizes MySQL `SELECT ... FOR UPDATE` transactions to physically prevent "double-booking" of the last available seat.
+- **Client-Side Live Search:** Instantly filters event listings on the homepage without reloading the page using DOM manipulation.
+- **Data Export:** Organizers can instantly generate and download an Excel-ready `.csv` report of all their attendees using purely frontend JavaScript blobs.
+- **Dynamic Capacity Management:** The system checks prevent organizers from shrinking an event's capacity below the number of tickets already sold.
 
 ---
 
@@ -60,144 +59,73 @@ event-booking/
 - MySQL ≥ 8
 
 ### 1. Clone the repo
-
 ```bash
 git clone https://github.com/kushagra31-coder/Event-Booking-System.git
 cd Event-Booking-System
 ```
 
-### 2. Install backend dependencies
-
+### 2. Install dependencies
 ```bash
 cd backend
 npm install
 ```
 
 ### 3. Set up environment variables
-
-```bash
-cp .env.example .env
-# Open .env and fill in your MySQL credentials and a JWT secret
+Create a `.env` file inside the `backend` folder:
+```env
+PORT=3000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=event_booking
+JWT_SECRET=supersecretcapstonekey123
 ```
 
 ### 4. Create database and run schema
-
-```bash
-mysql -u root -p
-```
-```sql
-source database/schema.sql
-```
-Or pipe it directly:
 ```bash
 mysql -u root -p < database/schema.sql
 ```
 
-### 5. Seed sample data (optional but recommended)
-
+### 5. Seed sample data
 ```bash
 # From the project root
 node database/seed.js
 ```
 
-This creates:
-- **Organizer:** `admin@eventhub.com` / `organizer123`
-- **Student:** `aisha@student.edu` / `student123`
-
 ### 6. Start the server
-
 ```bash
 cd backend
-npm run dev     # uses nodemon (auto-restart on changes)
-# or
-npm start       # plain node
+npm start
 ```
-
 Open **http://localhost:3000** in your browser.
 
 ---
 
-## API Routes
+## Remote Deployment (100% Free)
 
-| Method | Route | Auth | Description |
-|--------|-------|------|-------------|
-| POST | `/api/auth/register` | — | Register new account |
-| POST | `/api/auth/login` | — | Login, returns JWT |
-| GET | `/api/auth/me` | ✓ | Current user info |
-| GET | `/api/events` | — | List all events (search + filter) |
-| GET | `/api/events/:id` | — | Single event detail |
-| GET | `/api/events/my` | Organizer | Organizer's own events |
-| POST | `/api/events` | Organizer | Create event (multipart) |
-| PUT | `/api/events/:id` | Organizer | Update event |
-| DELETE | `/api/events/:id` | Organizer | Delete event |
-| GET | `/api/bookings` | User | User's booking history |
-| GET | `/api/bookings/:id` | User | Single booking |
-| POST | `/api/bookings/event/:eventId` | User | Book seats (transactional) |
-| PATCH | `/api/bookings/:id/cancel` | User | Cancel booking |
-| GET | `/api/dashboard/user` | User | User stats |
-| GET | `/api/dashboard/admin` | Organizer | Analytics + recent bookings |
-| GET | `/api/notifications` | ✓ | User's notifications |
-| GET | `/api/notifications/unread` | ✓ | Unread count |
-| PATCH | `/api/notifications/read-all` | ✓ | Mark all read |
-| GET | `/api/notifications/report/:eventId` | Organizer | Event booking report |
+This project is configured to run for free using **Render** (hosting) and **FreeSQLDatabase** (remote MySQL).
 
----
-
-## Deployment (Railway)
-
-Railway runs both the Node.js app and MySQL in one project — easiest option for this stack.
-
-### Step 1: Create a Railway project
-
-1. Go to [railway.app](https://railway.app) → **New Project**
-2. Select **Deploy from GitHub repo** → pick `Event-Booking-System`
-3. Set **Root Directory** to `backend`
-4. Railway will auto-detect Node.js
-
-### Step 2: Add a MySQL service
-
-1. In your Railway project → **+ New** → **Database** → **MySQL**
-2. Click the MySQL service → **Variables** tab → copy the values:
-   - `MYSQL_HOST`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQLPASSWORD`, `MYSQL_DATABASE`
-
-### Step 3: Set environment variables on the web service
-
-Go to your web service → **Variables** → add:
-
-```
-DB_HOST      = (from MySQL service MYSQL_HOST)
-DB_USER      = (from MySQL service MYSQL_USER)
-DB_PASSWORD  = (from MySQL service MYSQL_PASSWORD)
-DB_NAME      = (from MySQL service MYSQL_DATABASE)
-JWT_SECRET   = (any long random string — generate one at random.org)
-PORT         = 3000
-```
-
-### Step 4: Run the schema
-
-In Railway → MySQL service → **Query** tab (or connect via a DB client):
-
-```sql
--- paste the contents of database/schema.sql
-```
-
-### Step 5: Deploy
-
-Railway auto-deploys on every push to `master`. Your app will be live at the URL shown in the Railway dashboard.
-
-> **Note on file uploads:** Railway's free tier uses ephemeral storage — uploaded banner images reset on each deploy. For a persistent demo, either skip banner uploads or upgrade to a paid tier with a volume. All other functionality (auth, events, bookings, dashboard) works fine.
+1. Get a free MySQL database from [freesqldatabase.com](https://www.freesqldatabase.com/).
+2. Put the credentials they email you into your `backend/.env` file.
+3. Run `node database/setup-remote.js` to automatically push all tables and seed data to your new remote database.
+4. Go to [Render.com](https://render.com) and create a **Web Service**.
+5. Connect your GitHub repository.
+6. Set the **Root Directory** to `backend`.
+7. Set the **Build Command** to `npm install` and **Start Command** to `npm start`.
+8. Add your 4 database environment variables (`DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`) and `JWT_SECRET` to the Render Environment Variables tab.
+9. Deploy! Render will serve both the backend API and the frontend HTML files automatically.
 
 ---
 
 ## Known Limitations
 
-- No real payment processing — the "Pay & Confirm" button is a mock
-- Banner images don't persist on free-tier Railway (ephemeral disk)
-- Email notifications are not implemented (in-app only)
-- Single admin role — no multi-organizer permission system
+- No real payment processing — the "Pay & Confirm" button is a mock simulation.
+- Email notifications are not implemented (in-app alert table only).
+- Uploaded banner images will reset if the free Render server goes to sleep (ephemeral file system).
 
 ---
 
 ## Author
 
-Kushagra Tomar · B.Tech CSE · SkillOrbit Capstone 2024
+**Kushagra Tomar**  
+B.Tech CSIT · Skill Orbit Capstone 2026

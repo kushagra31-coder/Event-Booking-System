@@ -1,5 +1,5 @@
 // API base — change this when deploying
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 // ── helpers ──
 

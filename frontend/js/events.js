@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 // ── session helpers (same pattern as auth.js) ──
 

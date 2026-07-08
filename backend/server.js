@@ -16,15 +16,17 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // api routes — more will be mounted here as modules are added
-app.use('/api/auth',   require('./routes/auth'));
-app.use('/api/events', require('./routes/events'));
+app.use('/api/auth',     require('./routes/auth'));
+app.use('/api/events',   require('./routes/events'));
+app.use('/api/bookings', require('./routes/bookings'));
 
-// multer validation errors come through here
+// multer validation errors come through here; generic fallback below
 app.use((err, req, res, next) => {
   if (err.message && err.message.includes('Only JPG')) {
     return res.status(400).json({ error: err.message });
   }
-  next(err);
+  console.error(err);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 // catch-all: anything that's not an API route gets the frontend

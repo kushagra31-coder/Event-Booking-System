@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Details — EventHub</title>
+  <meta name="description" content="View event details and book your tickets." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/booking.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">Event<span>Hub</span></a>
+  <ul class="navbar-links" id="nav-links"></ul>
+</nav>
+
+<!-- Banner image (filled by JS) -->
+<div class="detail-banner" id="event-banner">
+  <div class="banner-placeholder-lg" id="banner-placeholder"></div>
+</div>
+
+<!-- Two-column layout: info on left, booking widget on right -->
+<div class="detail-main">
+
+  <!-- Left: event content -->
+  <div class="detail-content" id="event-content">
+    <p style="color:var(--muted); font-size:14px;">Loading event…</p>
+  </div>
+
+  <!-- Right: sticky booking widget -->
+  <aside class="booking-widget" id="booking-widget" style="display:none;">
+    <div id="widget-price-area"></div>
+    <div class="seats-indicator" id="seats-indicator"></div>
+
+    <div id="booking-form-area">
+      <label class="seat-selector-label" for="seat-count-display">Number of seats</label>
+      <div class="seat-selector">
+        <button class="seat-btn" id="btn-dec" title="Decrease">−</button>
+        <div class="seat-count-display" id="seat-count-display">1</div>
+        <button class="seat-btn" id="btn-inc" title="Increase">+</button>
+      </div>
+
+      <div class="widget-total">
+        <span class="total-label">Total</span>
+        <span class="total-value" id="total-display">₹0</span>
+      </div>
+
+      <div id="widget-alert" class="alert" style="display:none;"></div>
+
+      <button class="btn btn-primary btn-block" id="btn-book" data-label="Pay &amp; Confirm">
+        Pay &amp; Confirm
+      </button>
+      <p style="font-size:11px; color:var(--muted); text-align:center; margin-top:8px;">
+        Mock payment — no real charges
+      </p>
+    </div>
+
+    <div id="already-booked-area"></div>
+  </aside>
+
+</div>
+
+<script src="js/booking.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+/* Admin panel styles — extends style.css */
+
+/* ── Layout ── */
+.admin-body {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* ── Stats band ── */
+.stats-band {
+  background: var(--dark-2);
+  padding: 28px 32px;
+}
+
+.stats-band h2 {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a7570;
+  margin-bottom: 16px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* frosted glass — only on stat cards, nowhere else */
+.stat-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.stat-card .label {
+  font-size: 12px;
+  color: #7a7570;
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stat-card .value {
+  font-family: var(--font-head);
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.stat-card .value.accent {
+  color: var(--red);
+}
+
+/* ── Main content area ── */
+.admin-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.section-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-bar h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ── Events table ── */
+.table-wrapper {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.events-table thead th {
+  background: #f2efe9;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.events-table tbody td {
+  padding: 13px 16px;
+  border-bottom: 1px solid #f0ece6;
+  vertical-align: middle;
+}
+
+.events-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.events-table tbody tr:hover td {
+  background: #faf8f5;
+}
+
+.event-title-cell strong {
+  display: block;
+  color: var(--text);
+}
+
+.event-title-cell span {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── Status badges ── */
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-upcoming  { background: #e8f4fd; color: #1a6091; }
+.badge-ongoing   { background: #eafaf1; color: #1e6e44; }
+.badge-cancelled { background: #fdecea; color: #a93226; }
+.badge-past      { background: #f5f5f5; color: #7a7570; }
+
+/* ── Capacity bar ── */
+.cap-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.cap-bar {
+  width: 60px;
+  height: 5px;
+  background: #e8e4de;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.cap-bar-fill {
+  height: 100%;
+  background: var(--red);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+/* ── Table action buttons ── */
+.btn-edit {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  margin-right: 4px;
+  transition: background 0.15s;
+}
+
+.btn-edit:hover {
+  background: var(--bg);
+}
+
+.btn-del {
+  background: transparent;
+  border: none;
+  color: #c0392b;
+  padding: 5px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.btn-del:hover {
+  background: #fdecea;
+}
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center;
+  padding: 52px 24px;
+  color: var(--muted);
+}
+
+.empty-state p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+}
+
+.modal-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--muted);
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.modal-close:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 20px 24px 24px;
+}
+
+.modal-body .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.modal-alert {
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+/* ── Navbar user info ── */
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-user span {
+  color: #9e9890;
+  font-size: 13px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .stats-band {
+    padding: 20px 16px;
+  }
+  .admin-main {
+    padding: 20px 16px;
+  }
+  .events-table thead {
+    display: none;  /* scroll table on mobile */
+  }
+}

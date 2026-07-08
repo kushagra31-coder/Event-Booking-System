@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organizer Panel — EventHub</title>
+  <meta name="description" content="Manage your events — create, edit, track bookings." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">Event<span>Hub</span></a>
+  <div class="navbar-user">
+    <span id="nav-username">Organizer</span>
+    <button class="btn btn-ghost" id="btn-logout" style="font-size:13px; padding:6px 14px;">
+      Log out
+    </button>
+  </div>
+</nav>
+
+<!-- Stats band (dark bg + frosted glass cards) -->
+<section class="stats-band">
+  <h2>Overview</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="label">Total Events</div>
+      <div class="value" id="stat-total">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Upcoming</div>
+      <div class="value accent" id="stat-upcoming">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Seats Booked</div>
+      <div class="value" id="stat-booked">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Total Capacity</div>
+      <div class="value" id="stat-capacity">—</div>
+    </div>
+  </div>
+</section>
+
+<!-- Main: event table -->
+<main class="admin-main">
+  <div class="section-bar">
+    <h2>My Events</h2>
+    <button class="btn btn-primary" id="btn-new-event">+ New Event</button>
+  </div>
+
+  <div id="table-alert" class="alert" style="display:none;"></div>
+
+  <div class="table-wrapper">
+    <table class="events-table" id="events-table">
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>Date &amp; Time</th>
+          <th>Venue</th>
+          <th>Capacity</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="events-tbody">
+        <tr>
+          <td colspan="7">
+            <div class="empty-state">
+              <p>Loading your events…</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Create / Edit Modal -->
+<div id="event-modal" class="modal-overlay" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Create Event</h3>
+      <button class="modal-close" id="modal-close" title="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="modal-alert" class="alert modal-alert" style="display:none;"></div>
+
+      <form id="event-form" enctype="multipart/form-data">
+        <input type="hidden" id="edit-id" value="" />
+
+        <div class="form-group">
+          <label for="ev-title">Event title *</label>
+          <input type="text" id="ev-title" placeholder="e.g. TechFest 2024 Opening Ceremony" />
+        </div>
+
+        <div class="form-group">
+          <label for="ev-desc">Description</label>
+          <textarea id="ev-desc" placeholder="What's this event about?"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="ev-venue">Venue *</label>
+          <input type="text" id="ev-venue" placeholder="e.g. Main Auditorium, Block A" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ev-date">Date *</label>
+            <input type="date" id="ev-date" />
+          </div>
+          <div class="form-group">
+            <label for="ev-time">Time *</label>
+            <input type="time" id="ev-time" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ev-capacity">Total seats *</label>
+            <input type="number" id="ev-capacity" min="1" placeholder="200" />
+          </div>
+          <div class="form-group">
+            <label for="ev-price">Ticket price (₹)</label>
+            <input type="number" id="ev-price" min="0" step="0.01" placeholder="0 for free" />
+          </div>
+        </div>
+
+        <div class="form-group" id="status-group" style="display:none;">
+          <label for="ev-status">Status</label>
+          <select id="ev-status">
+            <option value="upcoming">Upcoming</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="past">Past</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ev-banner">Banner image <span class="text-muted text-sm">(JPG/PNG/WebP, max 5MB)</span></label>
+          <input type="file" id="ev-banner" accept=".jpg,.jpeg,.png,.webp" />
+          <div id="current-banner" style="margin-top:6px; font-size:12px; color:var(--muted);"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="modal-submit-btn" data-label="Save Event">
+          Save Event
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="js/events.js"></script>
+</body>
+</html>

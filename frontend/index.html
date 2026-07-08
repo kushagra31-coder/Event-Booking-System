@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventHub — Browse Events</title>
+  <meta name="description" content="Browse and book tickets for upcoming campus events — fests, workshops, seminars and more." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/browse.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">Event<span>Hub</span></a>
+  <ul class="navbar-links" id="nav-links">
+    <!-- filled by JS based on login state -->
+  </ul>
+</nav>
+
+<!-- Page header: intentionally compact, not a hero -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1>Upcoming Events</h1>
+    <p class="text-muted" style="font-size:14px; margin-top:4px;">
+      Browse events, check seat availability, and book your spot.
+    </p>
+  </div>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <input type="text" id="search-input" placeholder="Search by name or venue…" class="filter-search" />
+    <select id="status-filter" class="filter-select">
+      <option value="all">All statuses</option>
+      <option value="upcoming" selected>Upcoming</option>
+      <option value="ongoing">Ongoing</option>
+      <option value="past">Past</option>
+    </select>
+    <button class="btn btn-ghost" id="btn-clear-filter" style="font-size:13px; padding:8px 14px;">
+      Clear
+    </button>
+  </div>
+</div>
+
+<!-- Events grid -->
+<main class="browse-main">
+  <div id="events-grid" class="events-grid">
+    <p style="color:var(--muted); font-size:14px;">Loading events…</p>
+  </div>
+</main>
+
+<script src="js/browse.js"></script>
+</body>
+</html>

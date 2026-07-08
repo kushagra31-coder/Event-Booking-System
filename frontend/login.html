@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — EventHub</title>
+  <meta name="description" content="Log in to EventHub to browse and book event tickets." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="auth-wrapper">
+  <!-- Left: branding panel -->
+  <div class="auth-panel-left">
+    <div class="brand">Event<span>Hub</span></div>
+
+    <div>
+      <p class="tagline">Your campus.<br/>Your events.<br/><em>Book it.</em></p>
+      <ul class="feature-list">
+        <li>Browse upcoming fests, workshops, and seminars</li>
+        <li>Reserve seats in seconds — no account clutter</li>
+        <li>Track all your bookings from one dashboard</li>
+        <li>Organizers get full event management tools</li>
+      </ul>
+    </div>
+
+    <p class="bottom-note">SkillOrbit Capstone Project · 2024</p>
+  </div>
+
+  <!-- Right: login form -->
+  <div class="auth-panel-right">
+    <h2>Welcome back</h2>
+    <p class="sub">Enter your credentials to continue</p>
+
+    <div id="login-alert" class="alert alert-error" style="display:none;"></div>
+
+    <form id="login-form" novalidate>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@college.edu" autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+        Log in
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      Don't have an account? <a href="register.html">Create one</a>
+    </p>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

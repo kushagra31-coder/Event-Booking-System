@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — EventHub</title>
+  <meta name="description" content="Create an account on EventHub to start booking event tickets." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="auth-wrapper">
+  <!-- Left: branding panel -->
+  <div class="auth-panel-left">
+    <div class="brand">Event<span>Hub</span></div>
+
+    <div>
+      <p class="tagline">Join as a <em>student</em> or as an <em>organizer.</em></p>
+      <ul class="feature-list">
+        <li><strong style="color:#c4bdb7;">Students</strong> — find and book events on campus</li>
+        <li><strong style="color:#c4bdb7;">Organizers</strong> — create events, manage capacity, see analytics</li>
+        <li>Free to use, no payment info required for free events</li>
+        <li>Booking confirmation shown instantly after payment</li>
+      </ul>
+    </div>
+
+    <p class="bottom-note">SkillOrbit Capstone Project · 2024</p>
+  </div>
+
+  <!-- Right: registration form -->
+  <div class="auth-panel-right">
+    <h2>Create account</h2>
+    <p class="sub">Takes about 30 seconds</p>
+
+    <div id="register-alert" class="alert" style="display:none;"></div>
+
+    <!-- role picker — sits above the form, not inside it -->
+    <div class="role-toggle" id="role-toggle">
+      <button type="button" class="active" data-role="user" id="role-user">Student / Attendee</button>
+      <button type="button" data-role="organizer" id="role-organizer">Organizer</button>
+    </div>
+
+    <form id="register-form" novalidate>
+      <input type="hidden" id="role" name="role" value="user" />
+
+      <div class="form-group">
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" placeholder="Kushagra Tomar" autocomplete="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@college.edu" autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password <span class="text-muted text-sm">(min 6 chars)</span></label>
+        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password" />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" id="register-btn">
+        Create account
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      Already have an account? <a href="login.html">Log in</a>
+    </p>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,74 +1,45 @@
-# Project Report: Event Booking System
-**Course / Capstone Project 2024**
-**Student:** Kushagra Tomar
-**Program:** B.Tech CSE (SkillOrbit Internship)
+# Internship Project Report: Event Booking System
+**Submitted by:** Kushagra Tomar (B.Tech CSE, 2nd Year)  
+**Organization:** SkillOrbit  
+**Year:** 2024  
 
 ---
 
 ## 1. Introduction
-### 1.1 Objective
-The objective of this project is to develop a comprehensive, full-stack Event Booking System that facilitates the discovery, management, and booking of campus events, workshops, and seminars. The platform serves two primary user roles: **Students (Users)**, who browse and reserve tickets, and **Organizers (Admins)**, who create events and track attendance through an analytics dashboard.
+For my SkillOrbit capstone project, I built a web-based Event Booking System. The main goal was to create a platform where students can find and book college events (like fests or hackathons), and organizers can manage those events and track who is coming.
 
-### 1.2 Scope Limitations
-To ensure a clean, maintainable, and highly functional core platform, the system was scoped to exclude third-party payment gateway integrations (transactions are simulated), multi-vendor complexities, and advanced cloud-native architectures. The focus was strictly placed on robust database transactions, secure authentication, and a seamless User Interface (UI).
-
----
+I wanted to focus on getting the core functionality right rather than adding too many confusing features. Because of the time limit, I skipped integrating a real payment gateway (like Razorpay) and instead built a simulated "Pay & Confirm" button. My main priority was making sure the database and booking logic worked perfectly without breaking.
 
 ## 2. Technology Stack
-The project was developed using a modern, lightweight web stack to ensure fast execution and straightforward deployment:
-*   **Frontend:** HTML5, CSS3 (Vanilla, custom UI system), Vanilla JavaScript (DOM manipulation, Fetch API).
-*   **Backend:** Node.js, Express.js.
-*   **Database:** MySQL (Relational structure ensuring data integrity).
-*   **Authentication:** JSON Web Tokens (JWT) & bcrypt for password hashing.
-*   **File Uploads:** Multer (handling multipart/form-data for event banners).
+I decided to use a standard Node.js stack because it's lightweight and good for full-stack projects:
+*   **Frontend:** HTML, CSS, and plain JavaScript. I didn't use React or big CSS frameworks because I wanted to keep the code simple and prove I can manipulate the DOM manually.
+*   **Backend:** Node.js with Express.js.
+*   **Database:** MySQL.
+*   **Authentication:** JWT (JSON Web Tokens) stored in local storage, plus `bcrypt` to encrypt passwords before saving them.
 
----
+## 3. Database Design
+I kept the MySQL database relational and straightforward. It has four main tables:
+1.  **users:** Stores the user's name, email, hashed password, and whether they are a 'student' or an 'organizer'.
+2.  **events:** Stores event info (time, venue, capacity). It links back to the user table so we know which organizer created it.
+3.  **bookings:** Tracks who booked what. It links the user ID to the event ID.
+4.  **notifications:** A simple table to store alert messages for the user.
 
-## 3. System Architecture
-The application follows a standard Client-Server architecture. The frontend communicates with the backend exclusively via RESTful API endpoints. 
+## 4. How the Modules Work
 
-### 3.1 Database Schema (MySQL)
-The relational database consists of four core tables:
-1.  **users:** Stores credentials, hashed passwords, and roles (`user` or `organizer`).
-2.  **events:** Stores event details, capacities, venue information, and banner images. Foreign key links to the `users` table (organizer).
-3.  **bookings:** Tracks ticket reservations. Links users to specific events.
-4.  **notifications:** A lightweight table for storing in-app alerts when a booking is confirmed or cancelled.
+### Authentication
+When a user signs up, I use `bcrypt` to hash their password so it isn't stored in plain text. When they log in, the server creates a JWT. The frontend saves this token and sends it back to the server in the HTTP headers whenever the user tries to do something secure, like booking a ticket.
 
----
+### Event Management (Admin)
+Organizers have a dashboard where they can create or delete events. They can also upload event banner images using a library called `multer`. One issue I ran into early on was that an organizer could accidentally lower an event's capacity to less than the number of tickets already sold. I wrote a backend check to prevent this from happening.
 
-## 4. Key Modules & Implementation Details
+### Ticket Booking
+This was the hardest part of the project. If two students try to book the last available ticket at the exact same time, the system might accidentally sell it to both of them. To fix this, I used a MySQL Transaction with a `SELECT ... FOR UPDATE` lock. This basically forces the database to put the second person in a queue for a millisecond to check if the seat is still actually available before confirming the booking.
 
-### 4.1 Module 1: User Authentication
-Authentication is entirely stateless. When a user registers, their password is mathematically salted and hashed using `bcrypt` before database insertion. Upon login, the Express server generates a JWT containing the user's ID and Role. The client stores this token in `localStorage` and attaches it as a `Bearer` token to the `Authorization` header of all subsequent secure requests.
+### Dashboard & CSV Export
+Instead of making the server do all the work, I wrote JavaScript on the frontend to filter the user's bookings (Upcoming vs Past) instantly without reloading the page. For the organizers, I added a feature on the event report page where they can click a button to download the attendee list as a `.csv` file. I used JavaScript `Blob` for this so it generates right in the browser.
 
-### 4.2 Module 2: Event Management (Admin Panel)
-Organizers have access to a secure admin dashboard where they can perform CRUD (Create, Read, Update, Delete) operations on events. 
-*   **Capacity Safety:** The backend validates capacity updates, actively preventing organizers from lowering an event's capacity below the number of seats already sold.
-*   **File Handling:** Banners are processed by `multer` and served statically by Express.
-
-### 4.3 Module 3: Ticket Booking Engine
-The booking workflow includes critical backend safeguards to prevent "race conditions" (e.g., two students trying to book the final remaining seat at the exact same millisecond). 
-*   **Implementation:** The booking endpoint uses a MySQL Transaction (`BEGIN`, `COMMIT`, `ROLLBACK`) combined with a `SELECT ... FOR UPDATE` row-level lock. This guarantees atomicity and prevents overselling tickets.
-*   **UI Integration:** The frontend dynamically calculates total prices based on seat count selection without requiring page reloads.
-
-### 4.4 Module 4: Dashboard & Analytics
-The application provides customized dashboard views based on the JWT role:
-*   **Student Dashboard:** Displays upcoming, past, and cancelled bookings. Filtering is handled client-side via JavaScript array manipulation to reduce server load.
-*   **Organizer Dashboard:** Features a custom CSS-only proportional bar chart displaying the top events by booking volume, alongside aggregate statistics (Total Revenue, Total Bookings).
-
-### 4.5 Module 5: Notifications & Reports
-*   **In-App Alerts:** A universal bell widget dynamically injects into the navigation bar, alerting users to successful bookings. The notification dispatch logic operates in a "fire-and-forget" `.catch()` block on the server, ensuring that a notification failure never breaks the core booking transaction.
-*   **Data Export:** Organizers can view detailed attendee lists per event and export the data directly to a `.csv` file using a client-side JavaScript `Blob` generator.
-
----
-
-## 5. UI / UX Design Philosophy
-The frontend avoids generic "AI SaaS" templates (e.g., heavy glassmorphism, gradient sweeps). Instead, it utilizes a strictly functional, high-contrast aesthetic (Warm Red `#c0392b` and Near-Black `#1e1b18`). 
-*   Interactive elements feature subtle hover states.
-*   The Live Search feature uses client-side DOM filtering for instant feedback.
-*   Visual hierarchy is established through strong typography rather than excessive bordering or shadow effects.
-
----
+## 5. Design Choices
+A lot of modern websites use heavy gradients and glass effects, but I wanted this to look like a practical, functional campus tool. I stuck to a simple red and dark-gray color scheme. I also added a live search bar on the homepage so users can type and instantly filter the events, which makes the site feel a lot faster.
 
 ## 6. Conclusion
-The Event Booking System successfully fulfills all capstone requirements. It demonstrates practical knowledge of full-stack web development, secure REST API design, transactional database management, and responsive frontend implementation. The resulting platform is scalable, inspectable, and production-ready.
+Building this project taught me a lot about how the frontend and backend actually communicate. Managing the database locks for the booking system was tricky, but getting it to work was really rewarding. The final system meets all the capstone requirements and is fully functional.

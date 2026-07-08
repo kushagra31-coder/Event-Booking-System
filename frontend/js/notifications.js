@@ -180,6 +180,7 @@ async function loadReport(eventId) {
 }
 
 function renderReport(data) {
+  window.currentReportData = data; // store globally for CSV export
   const { event, summary, attendees } = data;
 
   const formatDate = d => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -200,6 +201,9 @@ function renderReport(data) {
       <div style="text-align:right; color:#9e9890; font-size:13px;">
         ${event.tickets_booked} / ${event.capacity} seats filled<br>
         <span style="color:var(--red); font-weight:600;">${fillPct}% capacity</span>
+        <div style="margin-top:10px;">
+          <button class="btn btn-outline" style="font-size:12px; padding:4px 10px;" onclick="exportReportCSV()">Download CSV</button>
+        </div>
       </div>
     </div>
 
@@ -254,6 +258,30 @@ function renderReport(data) {
     }
   `;
 }
+
+window.exportReportCSV = function() {
+  if (!window.currentReportData) return;
+  const { event, attendees } = window.currentReportData;
+  
+  let csv = "ID,Attendee Name,Email,Seats,Amount,Status,Booked At\n";
+  
+  attendees.forEach(b => {
+    const name = `"${b.attendee_name}"`; // escape commas in names
+    const email = `"${b.attendee_email}"`;
+    const amount = b.total_amount;
+    const date = new Date(b.booked_at).toLocaleDateString('en-IN');
+    csv += `${b.id},${name},${email},${b.seats},${amount},${b.status},${date}\n`;
+  });
+  
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.setAttribute('href', url);
+  a.setAttribute('download', `Event_Report_${event.id}.csv`);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
 
 // ── Auto-inject bell on pages that have a .navbar-user ──
 injectNotifBell();

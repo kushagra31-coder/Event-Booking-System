@@ -33,6 +33,16 @@ function doLogout() {
   window.location.reload();
 }
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function formatDateBadge(dateStr) {
   const d = new Date(dateStr);
   const day  = d.toLocaleDateString('en-IN', { day: '2-digit' });
@@ -56,9 +66,12 @@ function renderCard(ev) {
     ? `<span class="event-price">₹${parseFloat(ev.price).toFixed(0)}</span>`
     : `<span class="event-price free">Free</span>`;
 
+  const safeTitle = escapeHTML(ev.title);
+  const safeVenue = escapeHTML(ev.venue);
+  
   const bannerHtml = ev.banner_url
-    ? `<img src="${ev.banner_url}" alt="${ev.title}" loading="lazy" />`
-    : `<div class="banner-placeholder">${ev.title.charAt(0)}</div>`;
+    ? `<img src="${escapeHTML(ev.banner_url)}" alt="${safeTitle}" loading="lazy" />`
+    : `<div class="banner-placeholder">${safeTitle.charAt(0)}</div>`;
 
   // booking button — wired up in Module 3
   const bookBtn = seatsLeft <= 0
@@ -72,9 +85,9 @@ function renderCard(ev) {
         <div class="event-date-badge">${formatDateBadge(ev.event_date)}</div>
       </div>
       <div class="event-card-body">
-        <h3>${ev.title}</h3>
+        <h3>${safeTitle}</h3>
         <div class="event-meta">
-          <div class="event-meta-row">&#128205; ${ev.venue}</div>
+          <div class="event-meta-row">&#128205; ${safeVenue}</div>
           <div class="event-meta-row">&#128336; ${formatTime(ev.event_time)}</div>
         </div>
         <div class="event-card-footer">

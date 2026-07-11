@@ -110,7 +110,7 @@ async function loadNotifications() {
       <div class="notif-item ${n.is_read ? '' : 'unread'}">
         <div class="notif-dot ${n.is_read ? 'read' : ''}"></div>
         <div>
-          <div class="notif-text">${n.message}</div>
+          <div class="notif-text">${escapeHTML(n.message)}</div>
           <div class="notif-time">${timeAgo(n.created_at)}</div>
         </div>
       </div>
@@ -159,6 +159,16 @@ if (reportContent) {
   }
 }
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 async function loadReport(eventId) {
   try {
     const res  = await fetch(`${API}/notifications/report/${eventId}`, {
@@ -168,7 +178,7 @@ async function loadReport(eventId) {
 
     if (!res.ok) {
       document.getElementById('report-content').innerHTML =
-        `<p style="color:var(--red);">${data.error || 'Could not load report.'}</p>`;
+        `<p style="color:var(--red);">${escapeHTML(data.error) || 'Could not load report.'}</p>`;
       return;
     }
 
@@ -191,12 +201,15 @@ function renderReport(data) {
   };
 
   const fillPct = Math.round((event.tickets_booked / event.capacity) * 100);
+  
+  const safeTitle = escapeHTML(event.title);
+  const safeVenue = escapeHTML(event.venue);
 
   document.getElementById('report-content').innerHTML = `
     <div class="report-header-card">
       <div>
-        <h2>${event.title}</h2>
-        <div class="r-meta">${formatDate(event.date)} &middot; ${formatTime(event.time)} &middot; ${event.venue}</div>
+        <h2>${safeTitle}</h2>
+        <div class="r-meta">${formatDate(event.date)} &middot; ${formatTime(event.time)} &middot; ${safeVenue}</div>
       </div>
       <div style="text-align:right; color:#9e9890; font-size:13px;">
         ${event.tickets_booked} / ${event.capacity} seats filled<br>
@@ -245,8 +258,8 @@ function renderReport(data) {
             ${attendees.map((b, i) => `
               <tr>
                 <td>${i + 1}</td>
-                <td>${b.attendee_name}</td>
-                <td style="color:var(--muted);">${b.attendee_email}</td>
+                <td>${escapeHTML(b.attendee_name)}</td>
+                <td style="color:var(--muted);">${escapeHTML(b.attendee_email)}</td>
                 <td>${b.seats}</td>
                 <td>${parseFloat(b.total_amount) > 0 ? '&#8377;' + parseFloat(b.total_amount).toFixed(0) : 'Free'}</td>
                 <td><span class="badge badge-${b.status === 'confirmed' ? 'upcoming' : 'cancelled'}">${b.status}</span></td>

@@ -63,6 +63,16 @@ async function loadStats() {
 let allBookings = [];
 let activeTab   = 'upcoming';
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function classifyBooking(b) {
   if (b.status === 'cancelled') return 'cancelled';
   const eventDate = new Date(b.event_date);
@@ -105,17 +115,20 @@ function renderBookings(filter) {
     const cancelBtn   = (!isCancelled && isFuture)
       ? `<button class="btn-cancel" onclick="cancelBooking(${b.id})">Cancel</button>`
       : '';
+      
+    const safeTitle = escapeHTML(b.title);
+    const safeVenue = escapeHTML(b.venue);
 
     return `
       <div class="booking-row ${isCancelled ? 'cancelled' : ''}">
         <div>
           <div class="booking-event-title">
-            <a href="/event-detail.html?id=${b.event_id}" style="color:inherit; text-decoration:none;">${b.title}</a>
+            <a href="/event-detail.html?id=${b.event_id}" style="color:inherit; text-decoration:none;">${safeTitle}</a>
           </div>
           <div class="booking-meta">
             <span>&#128197; ${formatDate(b.event_date)}</span>
             <span>&#128336; ${formatTime(b.event_time)}</span>
-            <span>&#128205; ${b.venue}</span>
+            <span>&#128205; ${safeVenue}</span>
             <span>${b.seats} seat${b.seats > 1 ? 's' : ''}</span>
           </div>
         </div>

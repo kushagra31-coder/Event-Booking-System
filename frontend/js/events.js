@@ -85,6 +85,16 @@ function updateStats(events) {
 
 // ── Event table ──
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function renderTable(events) {
   const tbody = document.getElementById('events-tbody');
 
@@ -105,14 +115,17 @@ function renderTable(events) {
     const cap     = ev.capacity;
     const pct     = Math.round((booked / cap) * 100);
     const price   = ev.price > 0 ? `₹${parseFloat(ev.price).toFixed(0)}` : 'Free';
+    
+    const safeTitle = escapeHTML(ev.title);
+    const safeVenue = escapeHTML(ev.venue);
 
     return `
       <tr>
         <td class="event-title-cell">
-          <strong>${ev.title}</strong>
+          <strong>${safeTitle}</strong>
         </td>
         <td>${formatDate(ev.event_date)}<br><span style="font-size:12px;color:var(--muted)">${formatTime(ev.event_time)}</span></td>
-        <td>${ev.venue}</td>
+        <td>${safeVenue}</td>
         <td>
           <div class="cap-bar-wrap">
             <div class="cap-bar">
@@ -125,7 +138,7 @@ function renderTable(events) {
         <td>${badgeHtml(ev.status)}</td>
         <td>
           <button class="btn-edit" onclick="openEditModal(${ev.id})">Edit</button>
-          <button class="btn-del"  onclick="confirmDelete(${ev.id}, '${ev.title.replace(/'/g, "\\'")}')">Delete</button>
+          <button class="btn-del"  onclick="confirmDelete(${ev.id}, '${safeTitle.replace(/'/g, "\\'")}')">Delete</button>
           <a href="/report.html?event=${ev.id}" style="font-size:12px; color:var(--muted); margin-left:6px;">Report</a>
         </td>
       </tr>
@@ -312,11 +325,12 @@ async function loadAnalytics() {
     document.getElementById('bar-chart').innerHTML = data.topEvents.length === 0
       ? '<p style="color:var(--muted);font-size:13px;">No bookings yet.</p>'
       : data.topEvents.map(ev => {
+          const safeTitle = escapeHTML(ev.title);
           const pct = Math.round((ev.tickets_booked / maxBooked) * 100);
-          const label = ev.title.length > 20 ? ev.title.substring(0, 19) + '\u2026' : ev.title;
+          const label = safeTitle.length > 20 ? safeTitle.substring(0, 19) + '\u2026' : safeTitle;
           return `
             <div class="bar-row">
-              <span class="bar-label" title="${ev.title}">${label}</span>
+              <span class="bar-label" title="${safeTitle}">${label}</span>
               <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
               <span class="bar-val">${ev.tickets_booked}</span>
             </div>
@@ -329,11 +343,13 @@ async function loadAnalytics() {
       : data.recentBookings.map(b => {
           const ago = new Date(b.booked_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short' });
           const amt = parseFloat(b.total_amount) > 0 ? `\u20b9${parseFloat(b.total_amount).toFixed(0)}` : 'Free';
+          const safeUserName = escapeHTML(b.user_name);
+          const safeEventTitle = escapeHTML(b.event_title);
           return `
             <div class="recent-item">
               <div>
-                <div class="r-name">${b.user_name}</div>
-                <div class="r-event">${b.event_title}</div>
+                <div class="r-name">${safeUserName}</div>
+                <div class="r-event">${safeEventTitle}</div>
               </div>
               <div style="text-align:right;">
                 <div style="font-weight:600; font-size:13px;">${amt}</div>

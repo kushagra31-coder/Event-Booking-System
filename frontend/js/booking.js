@@ -60,6 +60,16 @@ if (detailContent) {
   }
 }
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 async function initDetailPage(eventId) {
   let ev;
   try {
@@ -72,20 +82,25 @@ async function initDetailPage(eventId) {
     return;
   }
 
+  const safeTitle = escapeHTML(ev.title);
+  const safeVenue = escapeHTML(ev.venue);
+  const safeDesc  = escapeHTML(ev.description);
+  const safeOrg   = escapeHTML(ev.organizer_name);
+
   // banner
   const bannerEl = document.getElementById('event-banner');
   const placeholder = document.getElementById('banner-placeholder');
   if (ev.banner_url) {
-    bannerEl.innerHTML = `<img src="${ev.banner_url}" alt="${ev.title}" />`;
+    bannerEl.innerHTML = `<img src="${escapeHTML(ev.banner_url)}" alt="${safeTitle}" />`;
   } else {
-    placeholder.textContent = ev.title.charAt(0);
+    placeholder.textContent = safeTitle.charAt(0);
   }
 
-  document.title = `${ev.title} — EventHub`;
+  document.title = `${safeTitle} — EventHub`;
 
   // main content
   document.getElementById('event-content').innerHTML = `
-    <h1>${ev.title}</h1>
+    <h1>${safeTitle}</h1>
     <div class="detail-meta">
       <div class="detail-meta-item">
         <span class="meta-label">Date</span>
@@ -97,7 +112,7 @@ async function initDetailPage(eventId) {
       </div>
       <div class="detail-meta-item">
         <span class="meta-label">Venue</span>
-        <span class="meta-value">${ev.venue}</span>
+        <span class="meta-value">${safeVenue}</span>
       </div>
       <div class="detail-meta-item">
         <span class="meta-label">Status</span>
@@ -107,10 +122,10 @@ async function initDetailPage(eventId) {
     ${ev.description
       ? `<div class="detail-description">
            <h2>About this event</h2>
-           <p>${ev.description.replace(/\n/g, '<br>')}</p>
+           <p>${safeDesc.replace(/\n/g, '<br>')}</p>
          </div>`
       : ''}
-    <div class="by-organizer">Organised by <strong>${ev.organizer_name}</strong></div>
+    <div class="by-organizer">Organised by <strong>${safeOrg}</strong></div>
   `;
 
   // booking widget
@@ -274,6 +289,9 @@ function renderConfirmation(b) {
   const card     = document.getElementById('confirm-card');
   const isFree   = parseFloat(b.total_amount) === 0;
   const amount   = isFree ? 'Free' : `₹${parseFloat(b.total_amount).toFixed(2)}`;
+  
+  const safeTitle = escapeHTML(b.title);
+  const safeVenue = escapeHTML(b.venue);
 
   card.innerHTML = `
     <div class="confirm-icon"></div>
@@ -281,10 +299,10 @@ function renderConfirmation(b) {
     <p class="booking-ref">Reference: <strong>#${b.id}</strong></p>
 
     <table class="detail-table">
-      <tr><td>Event</td><td>${b.title}</td></tr>
+      <tr><td>Event</td><td>${safeTitle}</td></tr>
       <tr><td>Date</td><td>${formatDate(b.event_date)}</td></tr>
       <tr><td>Time</td><td>${formatTime(b.event_time)}</td></tr>
-      <tr><td>Venue</td><td>${b.venue}</td></tr>
+      <tr><td>Venue</td><td>${safeVenue}</td></tr>
       <tr><td>Seats</td><td>${b.seats}</td></tr>
       <tr><td>Amount paid</td><td>${amount}</td></tr>
       <tr><td>Booked at</td><td>${new Date(b.booked_at).toLocaleString('en-IN')}</td></tr>
